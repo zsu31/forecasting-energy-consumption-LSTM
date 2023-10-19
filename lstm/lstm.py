@@ -19,7 +19,6 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, CuDNNLSTM, LSTM, Activation, Bidirectional
 from tensorflow.keras.layers import Flatten, TimeDistributed
-
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
 
@@ -237,7 +236,7 @@ loss = []
 tscv = TimeSeriesSplit(n_splits=3)
 for train_index, test_index in tscv.split(df):
 
-  #### μόνο τελευταία επανάληψη για το walk forward validation.....
+  #### Γ¬ΓΌΓ­Γ― Γ΄Γ¥Γ«Γ¥ΓµΓ΄Γ΅ΓΓ΅ Γ¥Γ°Γ΅Γ­ΓΓ«Γ§ΓΈΓ§ Γ£Γ©Γ΅ Γ΄Γ― walk forward validation.....
   if (count >= 2 ):
 
     df2 = df.copy()
@@ -310,7 +309,7 @@ for train_index, test_index in tscv.split(df):
 
     """.....train model....."""
 
-    ###Για stateful LSTM ######
+    ###ΓƒΓ©Γ΅ stateful LSTM ######
 
     for i in range(EPOCHS):
       print(f'Split: {count} Epochs: {i}/{EPOCHS}')
@@ -345,18 +344,18 @@ for train_index, test_index in tscv.split(df):
    
     #### make & evaluate our prediction ########################################################################
 
-    yhat = model.predict(test_x)                    # κάνω πρόβλεψη δίνοντας ως input το test data και όχι το train dataset
+    yhat = model.predict(test_x)                    # ΓªΓΓ­ΓΉ Γ°Γ±ΓΌΓΆΓ«Γ¥ΓΈΓ§ Γ¤ΓΓ­Γ―Γ­Γ΄Γ΅Γ² ΓΉΓ² input Γ΄Γ― test data ΓªΓ΅Γ© ΓΌΓ·Γ© Γ΄Γ― train dataset
                                  
 
     ###### invert scaling for forecast
-    predict = np.zeros(shape=(len(yhat), 4) )       # εφτιαξα np.array με τον ιδιο αριθμό στηλων για να μπορει να γίνει το inverse στις τιμες του prediction
-    predict[:,0] = yhat[:,0]                        #βάζω τις τιμες που προεβλεψα 
+    predict = np.zeros(shape=(len(yhat), 4) )       # Γ¥Γ¶Γ΄Γ©Γ΅Γ®Γ΅ np.array Γ¬Γ¥ Γ΄Γ―Γ­ Γ©Γ¤Γ©Γ― Γ΅Γ±Γ©Γ¨Γ¬ΓΌ Γ³Γ΄Γ§Γ«ΓΉΓ­ Γ£Γ©Γ΅ Γ­Γ΅ Γ¬Γ°Γ―Γ±Γ¥Γ© Γ­Γ΅ Γ£ΓΓ­Γ¥Γ© Γ΄Γ― inverse Γ³Γ΄Γ©Γ² Γ΄Γ©Γ¬Γ¥Γ² Γ΄Γ―Γµ prediction
+    predict[:,0] = yhat[:,0]                        #ΓΆΓΓ¦ΓΉ Γ΄Γ©Γ² Γ΄Γ©Γ¬Γ¥Γ² Γ°Γ―Γµ Γ°Γ±Γ―Γ¥ΓΆΓ«Γ¥ΓΈΓ΅ 
 
-    inv_yhat = scaler.inverse_transform(predict)    #κάνω το inverse_transform
-    inv_yhat = inv_yhat[:,0]                        #κρατάω μόνο την στήλη που θέλω για να υπολογίσω το Root mean square error
+    inv_yhat = scaler.inverse_transform(predict)    #ΓªΓΓ­ΓΉ Γ΄Γ― inverse_transform
+    inv_yhat = inv_yhat[:,0]                        #ΓªΓ±Γ΅Γ΄ΓΓΉ Γ¬ΓΌΓ­Γ― Γ΄Γ§Γ­ Γ³Γ΄ΓΓ«Γ§ Γ°Γ―Γµ Γ¨ΓΓ«ΓΉ Γ£Γ©Γ΅ Γ­Γ΅ ΓµΓ°Γ―Γ«Γ―Γ£ΓΓ³ΓΉ Γ΄Γ― Root mean square error
 
 
-    ###### invert scaling for actual                παρόμοια βήματα
+    ###### invert scaling for actual                Γ°Γ΅Γ±ΓΌΓ¬Γ―Γ©Γ΅ ΓΆΓΓ¬Γ΅Γ΄Γ΅
     actual = np.zeros(shape=(len(test_y), 4) )     
     actual[:,0] = test_y
 
@@ -378,7 +377,7 @@ for train_index, test_index in tscv.split(df):
 
 #### END OF LOOP #################################
 
-### για να πέρναμε το μέσο όρο των performance metrics για το walk forward validation
+### Γ£Γ©Γ΅ Γ­Γ΅ Γ°ΓΓ±Γ­Γ΅Γ¬Γ¥ Γ΄Γ― Γ¬ΓΓ³Γ― ΓΌΓ±Γ― Γ΄ΓΉΓ­ performance metrics Γ£Γ©Γ΅ Γ΄Γ― walk forward validation
 
 avg_loss = np.average(evaluate_loss)
 avg_mse = np.average(evaluate_mse)
